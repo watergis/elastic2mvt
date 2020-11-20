@@ -1,0 +1,38 @@
+{
+  "name": "elastic2mvt",
+  "version": "1.0.0",
+  "description": "This module generate Mapbox vector tiles from Elasticsearch",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JinIgarashi/elastic2mvt.git"
+  },
+  "keywords": [
+    "vectortiles",
+    "elasticsearch",
+    "mapbox",
+    "pbf"
+  ],
+  "author": "Jin IGARASHI",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JinIgarashi/elastic2mvt/issues"
+  },
+  "homepage": "https://github.com/JinIgarashi/elastic2mvt#readme",
+  "dependencies": {
+    "@mapbox/tilebelt": "^1.0.2",
+    "@turf/turf": "^5.1.6",
+    "elasticsearch": "^16.7.1",
+    "fs": "0.0.1-security",
+    "mapnik": "^4.5.3-imagetest.2",
+    "path": "^0.12.7",
+    "zlib": "^1.0.5"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "jest": "^26.6.3"
+  }
+}
