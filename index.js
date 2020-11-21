@@ -70,14 +70,17 @@ class elastic2mvt{
     if (!index.geometry){
       index.geometry = 'geom';
     }
+    if (!index.query){
+      index.query = {
+        "match_all": {}
+      }
+    }
     const response = await this.client.search({
       index: index.name,
       body: {
         query: {
           "bool": {
-            "must": {
-              "match_all": {}
-            },
+            "must": index.query,
             "filter": [
               {
                 "match_all": {}

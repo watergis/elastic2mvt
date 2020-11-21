@@ -22,7 +22,12 @@ describe('elasticsearch to mvt test', ()=>{
     const indices = [
       {
         name : 'water_connection',
-        geometry: 'geom'
+        geometry: 'geom',
+        query: {
+          "term": {
+            "connection_type": "Water Kiosk"
+          }
+        }
       },
       {
         name : 'pipeline',

@@ -22,8 +22,17 @@ const x = 9524
 const y = 8269
 const indices = [
   {
+    // Please specify target Elasticsearch index name
     name : 'water_connection',
-    geometry: 'geom'
+    // if you don't specify, 'geom' will be used as default column name
+    geometry: 'geom',
+    //Please specify your query for Elasticsearch. 
+    // if it is not defined, {"match_all": {}} will be used as default.
+    query: { 
+      "term": {
+        "connection_type": "Water Kiosk"
+      }
+    }
   },
   {
     name : 'pipeline',
