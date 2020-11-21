@@ -20,13 +20,26 @@ const es2mvt = new elastic2mvt('localhost:9200');
 const z = 14
 const x = 9524
 const y = 8269
-const indices = ['water_connection','pipeline','wss']
+const indices = [
+  {
+    name : 'water_connection',
+    geometry: 'geom'
+  },
+  {
+    name : 'pipeline',
+    geometry: 'geom'
+  },
+  {
+    name : 'wss',
+    geometry: 'geom'
+  }
+]
 const buffer = await es2mvt.generate(z,x,y,indices)
 console.log(buffer)
 ```
 
 ## Preparation
-Before using this module to convert from Elasticsearch to Mapbox binary vector tile, please insert your GIS data by using `ogr2ogr`. This module maybe does not work for Elastic documents which were inserted by other tools except `ogr2ogr`.
+Before using this module to convert from Elasticsearch to Mapbox binary vector tile, please insert your GIS data by using `ogr2ogr`. This module adopted `flat` structure of Elasticsearch documents. It maybe does not work for other mapping types of Elastic documents which were inserted by other tools except `ogr2ogr`.
 
 The following command is an example to insert from PostGIS.
 

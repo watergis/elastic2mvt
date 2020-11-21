@@ -19,7 +19,20 @@ describe('elasticsearch to mvt test', ()=>{
     const z = 14
     const x = 9524
     const y = 8269
-    const indices = ['water_connection','pipeline','wss']
+    const indices = [
+      {
+        name : 'water_connection',
+        geometry: 'geom'
+      },
+      {
+        name : 'pipeline',
+        geometry: 'geom'
+      },
+      {
+        name : 'wss',
+        geometry: 'geom'
+      }
+    ]
     const buffer = await es2mvt.generate(z,x,y,indices)
     const mvt = await write(buffer, 'output.pbf')
     expect(fs.existsSync(mvt), true);

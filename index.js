@@ -18,11 +18,9 @@ class elastic2mvt{
    * 
    * Construtor
    * @param {string} elastic_url Elasticsearch URL eg. localhost:9200
-   * @param {string} geom_name geometry column name. Default is 'geom'
    */
-  constructor(elastic_url, geom_name='geom'){
+  constructor(elastic_url){
     this.elastic_url = elastic_url
-    this.geom_name = geom_name
 
     this.client = new elasticsearch.Client({
       host: this.elastic_url,
@@ -35,7 +33,7 @@ class elastic2mvt{
    * @param {integer} z zoom level
    * @param {integer} x x index
    * @param {integer} y y index
-   * @param {string[]} indices Array of index name
+   * @param {object[]} indices Array of Elasticsearcg index information
    */
   async generate(z, x, y, indices){
     const tile = [x, y, z];
@@ -63,12 +61,17 @@ class elastic2mvt{
 
   /**
    * Search documents on target index by BBOX
-   * @param {string} index Index name
+   * @param {object} index Elasticsearcg index information
+   * @param {string} index.name Elasticsearch index name
+   * @param {string} index.geometry Geometry column name for the index. Default is 'geom'
    * @param {float[][]} bboxPolygon Polygon geometry for BBOX
    */
   async searchByBBOX(index, bboxPolygon){
+    if (!index.geometry){
+      index.geometry = 'geom';
+    }
     const response = await this.client.search({
-      index: index,
+      index: index.name,
       body: {
         query: {
           "bool": {
@@ -96,7 +99,7 @@ class elastic2mvt{
     let features = [];
     response.hits.hits.forEach(data=>{
       let src = data._source;
-      let keys = Object.keys(src).filter(k=>{return k !== this.geom_name});
+      let keys = Object.keys(src).filter(k=>{return k !== index.geometry});
       let props = {
         _index: data._index,
         _type: data._type,
@@ -106,15 +109,15 @@ class elastic2mvt{
       keys.forEach(k=>{
         props[k] = src[k];
       })
-      src[this.geom_name].type = geom_types[src[this.geom_name].type.toLowerCase()];
+      src[index.geometry].type = geom_types[src[index.geometry].type.toLowerCase()];
       features.push({
         type: 'Feature',
-        geometry: src[this.geom_name],
+        geometry: src[index.geometry],
         properties: props
       })
     })
     return {
-      name: index,
+      name: index.name,
       geojson: { 
         type: "FeatureCollection",
         features : features
