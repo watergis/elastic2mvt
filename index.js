@@ -1,6 +1,6 @@
 const elasticsearch = require('elasticsearch');
 const tilebelt = require('@mapbox/tilebelt');
-const turf = require('@turf/turf');
+const bboxPolygon = require('@turf/bbox-polygon').default;
 const mapnik = require('mapnik');
 const zlib = require('zlib');
 if (mapnik.register_default_input_plugins) mapnik.register_default_input_plugins();
@@ -38,11 +38,11 @@ class elastic2mvt{
   async generate(z, x, y, indices){
     const tile = [x, y, z];
     const bbox = tilebelt.tileToBBOX(tile);
-    const bboxPolygon = turf.bboxPolygon(bbox);
+    const polygon = bboxPolygon(bbox);
 
     let promises = [];
     indices.forEach(index=>{
-      promises.push(this.searchByBBOX(index, bboxPolygon))
+      promises.push(this.searchByBBOX(index, polygon))
     })
 
     const layers = await Promise.all(promises);

@@ -24,7 +24,7 @@
   "homepage": "https://github.com/JinIgarashi/elastic2mvt#readme",
   "dependencies": {
     "@mapbox/tilebelt": "^1.0.2",
-    "@turf/turf": "^5.1.6",
+    "@turf/bbox-polygon": "^6.0.1",
     "elasticsearch": "^16.7.1",
     "fs": "0.0.1-security",
     "mapnik": "^4.5.3-imagetest.2",
