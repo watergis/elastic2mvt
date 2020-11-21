@@ -48,7 +48,7 @@ class elastic2mvt{
     const layers = await Promise.all(promises);
     const vtile = new mapnik.VectorTile(z, x, y);
     layers.forEach(layer=>{
-      if (layer.geojson && layer.geojson.features){
+      if (layer.geojson && layer.geojson.features.length > 0){
         vtile.addGeoJSON(JSON.stringify(layer.geojson), layer.name)
       }
     })
