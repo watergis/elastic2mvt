@@ -63,8 +63,10 @@ class elastic2mvt{
    * Search documents on target index by BBOX
    * @param {object} index Elasticsearcg index information
    * @param {string} index.name Elasticsearch index name
+   * @param {integer} index.size Size of seaching result. Default is 10000
    * @param {string} index.geometry Geometry column name for the index. Default is 'geom'
    * @param {float[][]} bboxPolygon Polygon geometry for BBOX
+   * @param {integer} size
    */
   async searchByBBOX(index, bboxPolygon){
     if (!index.geometry){
@@ -77,14 +79,12 @@ class elastic2mvt{
     }
     const response = await this.client.search({
       index: index.name,
+      size: index.size | 10000,
       body: {
         query: {
           "bool": {
             "must": index.query,
             "filter": [
-              {
-                "match_all": {}
-              },
               {
                 "geo_shape": {
                   "geom": {

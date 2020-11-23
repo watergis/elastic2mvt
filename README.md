@@ -24,6 +24,8 @@ const indices = [
   {
     // Please specify target Elasticsearch index name
     name : 'water_connection',
+    // specify the size of searching result. Default is 10000.
+    size: 10000,
     // if you don't specify, 'geom' will be used as default column name
     geometry: 'geom',
     //Please specify your query for Elasticsearch. 
