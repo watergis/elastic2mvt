@@ -21,7 +21,7 @@ describe('elasticsearch to mvt test', ()=>{
     const y = 8241
     const indices = [
       {
-        name : 'osm_bulding_narok',
+        name : 'osm_building_narok',
         geometry: 'geometry',
         size: 10000,
         query: {
