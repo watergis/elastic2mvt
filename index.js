@@ -72,6 +72,11 @@ class elastic2mvt{
     if (!index.geometry){
       index.geometry = 'geom';
     }
+    let geo_shape = {}
+    geo_shape[index.geometry] = {
+      "shape": bboxPolygon.geometry,
+      "relation": "INTERSECTS"
+    }
     if (!index.query){
       index.query = {
         "match_all": {}
@@ -86,12 +91,7 @@ class elastic2mvt{
             "must": index.query,
             "filter": [
               {
-                "geo_shape": {
-                  "geom": {
-                    "shape": bboxPolygon.geometry,
-                    "relation": "INTERSECTS"
-                  }
-                }
+                "geo_shape": geo_shape
               }
             ]
           }

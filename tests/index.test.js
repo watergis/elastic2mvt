@@ -16,27 +16,19 @@ const write = (buffer, filename) =>{
 describe('elasticsearch to mvt test', ()=>{
   test('includes all assets', async () => {  
     const es2mvt = new elastic2mvt('localhost:9200');
-    const z = 13
-    const x = 4762
-    const y = 4135
+    const z = 14
+    const x = 9824
+    const y = 8241
     const indices = [
       {
-        name : 'water_connection',
-        geometry: 'geom',
+        name : 'osm_bulding_narok',
+        geometry: 'geometry',
         size: 10000,
         query: {
           "term": {
-            "connection_type": "Public Tap"
+            "building": "school"
           }
         }
-      },
-      {
-        name : 'pipeline',
-        geometry: 'geom'
-      },
-      {
-        name : 'wss',
-        geometry: 'geom'
       }
     ]
     const buffer = await es2mvt.generate(z,x,y,indices)
