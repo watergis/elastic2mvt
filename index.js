@@ -60,6 +60,66 @@ class elastic2mvt{
   }
 
   /**
+   * Get Index information
+   * @param {str} index Index name
+   * @returns returning an object which contains "geom_name", "geom_type" and list of columns
+   */
+  async getIndexInfo(index) {
+    const mapping = await this.client.indices.getMapping({index: index});
+    const _props = mapping[index].mappings.properties;
+    let geom_name;
+    let geom_type;
+    let cols = []
+    Object.keys(_props).forEach(key => {
+      cols.push(key);
+      if (Object.keys(_props[key]).includes('properties')) {
+        geom_name = key;
+        geom_type = 'geom_point';
+      } else if (Object.keys(_props[key]).includes('type')) { 
+        const _type = _props[key]['type'];
+        if (_type === 'geo_shape') {
+          geom_name = key;
+          geom_type = _type;
+        }
+      }
+    })
+    return {
+      geom_name: geom_name,
+      geom_type: geom_type,
+      cols: cols,
+    };
+  }
+
+  /**
+   * Get BBOX spatial query for Elasticsearch
+   * @param {*} bboxPolygon 
+   * @param {*} index_info 
+   */
+  getBBoxFilter(bboxPolygon, index_info) {
+    const geom_name = index_info['geom_name'];
+    const geom_type = index_info['geom_type'];
+
+    let res;
+    if (bboxPolygon) {
+      let geo_shape = {}
+      if (geom_type === 'geo_shape') {
+        geo_shape[geom_name] = {
+          "shape": bboxPolygon.geometry,
+          "relation": "intersects"
+        }
+        res = { geo_shape };
+      } else if (geom_type === 'geo_point') {
+        geo_shape[`${geom_name}.coordinates`] = {
+          "shape": bboxPolygon.geometry,
+          "relation": "intersects"
+        }
+        res = { geo_shape };
+      }
+    }
+    return res
+  }
+
+  /**
    * Search documents on target index by BBOX
    * @param {object} index Elasticsearcg index information
    * @param {string} index.name Elasticsearch index name
@@ -72,10 +132,11 @@ class elastic2mvt{
     if (!index.geometry){
       index.geometry = 'geom';
     }
-    let geo_shape = {}
-    geo_shape[index.geometry] = {
-      "shape": bboxPolygon.geometry,
-      "relation": "INTERSECTS"
+    const idx_info = await this.getIndexInfo(index.name);
+    const bbox_query = this.getBBoxFilter(bboxPolygon, idx_info);
+    let filter = [];
+    if (bbox_query) {
+      filter.push(bbox_query);
     }
     if (!index.query){
       index.query = {
@@ -89,11 +150,7 @@ class elastic2mvt{
         query: {
           "bool": {
             "must": index.query,
-            "filter": [
-              {
-                "geo_shape": geo_shape
-              }
-            ]
+            "filter": filter
           }
         }
       }
