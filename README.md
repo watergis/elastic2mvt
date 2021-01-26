@@ -1,5 +1,5 @@
 # elastic2mvt
-![GitHub](https://img.shields.io/github/license/JinIgarashi/elastic2mvt)
+![GitHub](https://img.shields.io/github/license/watergis/elastic2mvt)
 
 This module generate Mapbox vector tiles from Elasticsearch.
 
@@ -8,13 +8,13 @@ Note. This is still under experimental.
 ## Install package
 
 ```bash
-npm i git@github.com:JinIgarashi/elastic2mvt.git
+npm install @watergis/elastic2mvt
 ```
 
 ## Usage
 
 ```js
-const elastic2mvt = require('elastic2mvt');
+const elastic2mvt = require('@watergis/elastic2mvt');
 
 const es2mvt = new elastic2mvt('localhost:9200');
 const z = 14

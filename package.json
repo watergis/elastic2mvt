@@ -1,14 +1,17 @@
 {
-  "name": "elastic2mvt",
+  "name": "@watergis/elastic2mvt",
   "version": "1.0.0",
   "description": "This module generate Mapbox vector tiles from Elasticsearch",
   "main": "index.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "scripts": {
     "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JinIgarashi/elastic2mvt.git"
+    "url": "git+https://github.com/watergis/elastic2mvt.git"
   },
   "keywords": [
     "vectortiles",
@@ -19,9 +22,9 @@
   "author": "Jin IGARASHI",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/JinIgarashi/elastic2mvt/issues"
+    "url": "https://github.com/watergis/elastic2mvt/issues"
   },
-  "homepage": "https://github.com/JinIgarashi/elastic2mvt#readme",
+  "homepage": "https://github.com/watergis/elastic2mvt#readme",
   "dependencies": {
     "@mapbox/tilebelt": "^1.0.2",
     "@turf/bbox-polygon": "^6.0.1",
