@@ -1,4 +1,5 @@
 # elastic2mvt
+![Node.js Package](https://github.com/watergis/elastic2mvt/workflows/Node.js%20Package/badge.svg)
 ![GitHub](https://img.shields.io/github/license/watergis/elastic2mvt)
 
 This module generate Mapbox vector tiles from Elasticsearch.
